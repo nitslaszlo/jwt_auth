@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "pkief.material-icon-theme",
+        "mikestead.dotenv",
+        "mkloubert.vscode-http-client"
+    ]
+}
