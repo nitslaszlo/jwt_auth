@@ -2,7 +2,7 @@
   "name": "jwt_auth",
   "version": "1.0.0",
   "description": "Jwt Authentication with Node.js",
-  "main": "app.ts",
+  "main": "server.ts",
   "author": "Codevo",
   "license": "MIT",
   "scripts": {
