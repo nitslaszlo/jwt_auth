@@ -1,11 +1,11 @@
 import * as favicon from "serve-favicon";
 import * as path from "path";
 import * as cookieParser from "cookie-parser";
-import * as express from "express";
 import * as mongoose from "mongoose";
 import * as cors from "cors";
 import loggerMiddleware from "./middleware/logger.middleware";
 import { createClient } from 'redis';
+import express, { NextFunction, Request, Response } from 'express';
 
 export default class App {
     public app: express.Application;
@@ -47,9 +47,17 @@ export default class App {
             }),
         );
         this.app.use(loggerMiddleware);
+
+
     }
 
     private initializeControllers() {
+        this.app.get('/healthChecker', (req: Request, res: Response, next: NextFunction) => {
+            res.status(200).json({
+                status: 'success',
+                message: 'Welcome to CodevoWeb????',
+            });
+        });
     }
 
 
