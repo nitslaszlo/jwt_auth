@@ -5,7 +5,6 @@ import * as cookieParser from "cookie-parser";
 import * as mongoose from "mongoose";
 import * as cors from "cors";
 import loggerMiddleware from "./middleware/logger.middleware";
-import { createClient } from "redis";
 
 export default class App {
     public app: express.Application;
@@ -13,7 +12,6 @@ export default class App {
     constructor() {
         this.app = express();
         this.connectToTheDatabase();
-        this.connectToRedis();
         this.initializeMiddlewares();
         this.initializeControllers();
     }
@@ -49,10 +47,29 @@ export default class App {
     }
 
     private initializeControllers() {
+        // Testing
         this.app.get("/healthChecker", (req: express.Request, res: express.Response) => {
             res.status(200).json({
                 status: "success",
-                message: "Welcome to CodevoWeb!",
+                message: "Welcome to CodevoWeb????",
+            });
+        });
+
+        // UnKnown Routes
+        this.app.all("*", (req: express.Request, res: express.Response, next: express.NextFunction) => {
+            const err = new Error(`Route ${req.originalUrl} not found`) as any;
+            err.statusCode = 404;
+            next(err);
+        });
+
+        // Global Error Handler
+        this.app.use((err: any, req: express.Request, res: express.Response) => {
+            err.status = err.status || "error";
+            err.statusCode = err.statusCode || 500;
+
+            res.status(err.statusCode).json({
+                status: err.status,
+                message: err.message,
             });
         });
     }
@@ -72,21 +89,5 @@ export default class App {
         mongoose.connection.on("connected", () => {
             console.log("Connected to MongoDB server.");
         });
-    }
-
-    private async connectToRedis() {
-        const redisUrl = `redis://jwt-auth.cyclic.app:3000`;
-        const redisClient = createClient({
-            url: redisUrl,
-        });
-        try {
-            await redisClient.connect();
-            console.log("Redis client connected...");
-        } catch (err: any) {
-            console.log("Redis connect error!");
-            console.log(err.message);
-            setTimeout(this.connectToRedis, 5000);
-        }
-        redisClient.on("error", err => console.log(err));
     }
 }
