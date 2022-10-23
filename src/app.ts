@@ -49,12 +49,12 @@ export default class App {
     }
 
     private initializeControllers() {
-        // this.app.get('/healthChecker', (req: Request, res: Response, next: NextFunction) => {
-        //     res.status(200).json({
-        //         status: 'success',
-        //         message: 'Welcome to CodevoWeb????',
-        //     });
-        // });
+        this.app.get("/healthChecker", (req: express.Request, res: express.Response) => {
+            res.status(200).json({
+                status: "success",
+                message: "Welcome to CodevoWeb!",
+            });
+        });
     }
 
     private connectToTheDatabase() {
