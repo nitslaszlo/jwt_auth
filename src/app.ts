@@ -75,7 +75,7 @@ export default class App {
     }
 
     private async connectToRedis() {
-        const redisUrl = `redis://jwt-auth.cyclic.app:6379`;
+        const redisUrl = `redis://jwt-auth.cyclic.app:3000`;
         const redisClient = createClient({
             url: redisUrl,
         });
