@@ -8,6 +8,7 @@
     "scripts": {
         "start": "node ./dist/server.js",
         "compile": "tsc",
+        "build": "tsc",
         "compile:watch": "tsc --watch",
         "postinstall": "tsc",
         "dev": "nodemon",
