@@ -1,11 +1,11 @@
+import * as express from "express";
 import * as favicon from "serve-favicon";
 import * as path from "path";
 import * as cookieParser from "cookie-parser";
 import * as mongoose from "mongoose";
 import * as cors from "cors";
 import loggerMiddleware from "./middleware/logger.middleware";
-import { createClient } from 'redis';
-import express, { NextFunction, Request, Response } from 'express';
+import { createClient } from "redis";
 
 export default class App {
     public app: express.Application;
@@ -16,7 +16,6 @@ export default class App {
         this.connectToRedis();
         this.initializeMiddlewares();
         this.initializeControllers();
-
     }
 
     public listen(): void {
@@ -47,20 +46,16 @@ export default class App {
             }),
         );
         this.app.use(loggerMiddleware);
-
-
     }
 
     private initializeControllers() {
-        this.app.get('/healthChecker', (req: Request, res: Response, next: NextFunction) => {
-            res.status(200).json({
-                status: 'success',
-                message: 'Welcome to CodevoWeb????',
-            });
-        });
+        // this.app.get('/healthChecker', (req: Request, res: Response, next: NextFunction) => {
+        //     res.status(200).json({
+        //         status: 'success',
+        //         message: 'Welcome to CodevoWeb????',
+        //     });
+        // });
     }
-
-
 
     private connectToTheDatabase() {
         const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DB } = process.env;
@@ -80,18 +75,18 @@ export default class App {
     }
 
     private async connectToRedis() {
-        const redisUrl = `redis://jwt-auth.cyclic.app:6379`;
+        const redisUrl = `redis://localhost:6379`;
         const redisClient = createClient({
             url: redisUrl,
         });
         try {
             await redisClient.connect();
-            console.log('Redis client connected...');
+            console.log("Redis client connected...");
         } catch (err: any) {
+            console.log("Redis connect error!");
             console.log(err.message);
             setTimeout(this.connectToRedis, 5000);
         }
-        redisClient.on('error', (err) => console.log(err));
+        redisClient.on("error", err => console.log(err));
     }
 }
-
